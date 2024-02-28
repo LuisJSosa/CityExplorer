@@ -49,8 +49,7 @@ After sending the request, the next step is to handle the incoming response from
 
 Below are examples of how to make a request to the microservice and handle the response using different technologies:
 
-### Example using Spring Boot with Java
-
+### Example using Spring Boot with Java:
 ```java
 import org.springframework.web.client.RestTemplate;
 
@@ -63,7 +62,7 @@ public class WeatherClient {
     }
 }
 ```
-Example using JavaScript and Axios:
+### Example using JavaScript and Axios:
 ```javascript
     axios.get('http://localhost:8080/api/Raleigh')
       .then(response => {
@@ -73,6 +72,7 @@ Example using JavaScript and Axios:
         console.error('Error fetching data:', error);
       });
  ```
+### Example using Python and Fetch API
  ```python
 import requests
 
@@ -88,6 +88,7 @@ def fetch_weather_data(city):
 fetch_weather_data("Raleigh")
 
  ```
+### Example using Flask
  ```flask
 from flask import Flask, jsonify
 import requests
@@ -106,7 +107,7 @@ def fetch_weather(city):
 if __name__ == '__main__':
     app.run(debug=True)
  ```
-
+### Example using Vue.js
 ```Vue.js
 import axios from 'axios';
 
