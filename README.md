@@ -12,43 +12,59 @@ The primary function of this application is to provide weather-related informati
 
 ## How to Programmatically REQUEST Data
 
-To request data from our back-end microservice, you'll need to make an HTTP GET request to the appropriate API endpoint. The process is as follows:
+To request data from our back-end microservice, you'll need to make an HTTP GET request to the appropriate API endpoint. Here's a step-by-step guide:
 
-1. **URL Construction**: Start with the base URL of the back-end microservice and append the endpoint path. For weather data, the endpoint is typically structured as `/api/{city}`, where `{city}` should be replaced with the name of the city for which you want weather data.
+1. **URL Construction**: Begin with the base URL of the back-end microservice and append the specific endpoint path for fetching weather data. The standard format for these endpoints is `/api/{city}`, where `{city}` should be replaced with the actual city name you're interested in.
 
-    Example URL:
+    Example URL construction:
+    ```plaintext
+    http://localhost:8080/api/Raleigh
     ```
-    http://localhost:8080/api/{city}
-    ```
 
-2. **Making the Request**: Use an HTTP client to send a GET request to the constructed URL. You can use command-line tools like `curl`, libraries like `HttpClient` in Java, or `Axios` in JavaScript.
+2. **Making the Request**: Utilize an HTTP client to initiate a GET request to the constructed URL. This can be done through various methods depending on your development environment, such as using `curl` in the command line, `RestTemplate` in Spring Boot, or the `axios` library in JavaScript.
 
     Example using `curl`:
-    ```
+    ```plaintext
     curl http://localhost:8080/api/Raleigh
     ```
 
-3. **Include Headers/Parameters**: If the API requires authentication or other parameters, include these in your request headers or query parameters.
+3. **Including Headers/Parameters**: Certain scenarios might require you to include additional headers or parameters in your request, such as API keys for authentication or additional query parameters for filtering data.
 
-    Example with API key in header:
-    ```
+    Example with an API key header:
+    ```plaintext
     curl -H "X-Api-Key: YOUR_API_KEY" http://localhost:8080/api/Raleigh
     ```
 
-4. **Receive the Response**: The response from the back-end will typically be in JSON format, containing the requested weather data.
+4. **Receiving the Response**: The microservice will respond with the requested data, typically in JSON format. This response contains the weather information for the specified city.
 
 ## How to Programmatically RECEIVE Data
 
-Upon making the request, your client will receive a response from the back-end microservice. Here's how to handle this response:
+After sending the request, the next step is to handle the incoming response from the microservice:
 
-1. **Parsing the Response**: Extract the data from the response body. The format is usually JSON, so you'll need to parse this to a usable form in your programming language.
+1. **Parsing the Response**: The response body, usually in JSON format, contains the weather data you requested. You'll need to parse this JSON data into a structure that your application can work with.
 
-2. **Error Handling**: Implement error handling for scenarios such as network errors, API rate limits, or city not found. This usually involves checking the HTTP response status code and handling different cases accordingly.
+2. **Error Handling**: It's crucial to implement error handling for various failure scenarios, such as network issues, API limits being exceeded, or the requested city data not being available. This involves checking the response's HTTP status code and responding appropriately.
 
-3. **Using the Data**: Once parsed, use the data in your application as needed. For example, in a web application, you might update the DOM to display the weather information.
+3. **Utilizing the Data**: Once the JSON data is parsed and any potential errors are handled, you can use the weather data in your application. This might involve updating the user interface with the received weather details, performing calculations, or storing the data for future use.
 
-    Example using JavaScript and Axios:
-    ```javascript
+Below are examples of how to make a request to the microservice and handle the response using different technologies:
+
+### Example using Spring Boot with Java
+
+```java
+import org.springframework.web.client.RestTemplate;
+
+public class WeatherClient {
+    public void fetchWeatherData(String city) {
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "http://localhost:8080/api/" + city;
+        String response = restTemplate.getForObject(url, String.class);
+        System.out.println("Received response: " + response);  // Process the JSON response
+    }
+}
+```
+Example using JavaScript and Axios:
+```javascript
     axios.get('http://localhost:8080/api/Raleigh')
       .then(response => {
         console.log(response.data);  // Use this data to update your UI
@@ -56,18 +72,7 @@ Upon making the request, your client will receive a response from the back-end m
       .catch(error => {
         console.error('Error fetching data:', error);
       });
-    ```
-    
-   ```java
-public class WeatherClient {
-    public void fetchWeatherData(String city) {
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "http://localhost:8080/api/" + city;
-        String response = restTemplate.getForObject(url, String.class);
-        System.out.println(response);  // Process the JSON response as needed
-    }
-};
-    ```
+ ```
  ```python
 import requests
 
@@ -103,13 +108,6 @@ if __name__ == '__main__':
  ```
 
 ```Vue.js
-<template>
-  <div>
-    <!-- Your template here -->
-  </div>
-</template>
-
-<script>
 import axios from 'axios';
 
 export default {
@@ -134,7 +132,6 @@ export default {
     this.fetchWeatherData('Raleigh');  // Example call when the component mounts
   }
 }
-</script>
 
 ```
 ## UML Sequence Diagram
