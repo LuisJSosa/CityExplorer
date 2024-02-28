@@ -63,10 +63,26 @@ Upon making the request, your client will receive a response from the back-end m
 Below is a UML sequence diagram illustrating the interaction between the front-end and back-end microservices when requesting and receiving data:
 
 ```
-[User] -> [Front-end]: Request weather for {city}
-[Front-end] -> [Back-end]: GET /api/{city}
-[Back-end] -> [External Weather API]: Fetch weather for {city}
-[External Weather API] -> [Back-end]: Weather data
-[Back-end] -> [Front-end]: Response with weather data
-[Front-end] -> [User]: Display weather data
++-------+       +-----------+       +----------+       +-------------------+
+| User  |       | Front-end |       | Back-end |       | External Weather  |
+|       |       |           |       |          |       | API               |
++-------+       +-----------+       +----------+       +-------------------+
+    |                 |                  |                    |
+    | Request weather |                  |                    |
+    | for {city}      |                  |                    |
+    |---------------->|                  |                    |
+    |                 | GET /api/{city}  |                    |
+    |                 |-------------------------------------->|
+    |                 |                  | Fetch weather for  |
+    |                 |                  | {city}             |
+    |                 |                  |<-------------------|
+    |                 |                  | Weather data       |
+    |                 |<--------------------------------------|
+    |                 | Response with    |                    |
+    |                 | weather data     |                    |
+    |<----------------|                  |                    |
+    | Display weather |                  |                    |
+    | data            |                  |                    |
+    +                 +                  +                    +
+
 ```
