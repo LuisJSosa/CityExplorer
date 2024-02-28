@@ -57,7 +57,86 @@ Upon making the request, your client will receive a response from the back-end m
         console.error('Error fetching data:', error);
       });
     ```
+    
+   ```java
+public class WeatherClient {
+    public void fetchWeatherData(String city) {
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "http://localhost:8080/api/" + city;
+        String response = restTemplate.getForObject(url, String.class);
+        System.out.println(response);  // Process the JSON response as needed
+    }
+};
+    ```
+ ```python
+import requests
 
+def fetch_weather_data(city):
+    url = f"http://localhost:8080/api/{city}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        print(response.json())  # Process the JSON response as needed
+    else:
+        print("Error fetching data")
+
+# Usage
+fetch_weather_data("Raleigh")
+
+ ```
+ ```flask
+from flask import Flask, jsonify
+import requests
+
+app = Flask(__name__)
+
+@app.route('/fetch-weather/<city>')
+def fetch_weather(city):
+    url = f"http://localhost:8080/api/{city}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        return jsonify(response.json())  # Return the JSON response to the client
+    else:
+        return jsonify({"error": "Error fetching data"}), 500
+
+if __name__ == '__main__':
+    app.run(debug=True)
+ ```
+
+```Vue.js
+<template>
+  <div>
+    <!-- Your template here -->
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+  name: 'WeatherComponent',
+  data() {
+    return {
+      weatherData: null,
+    };
+  },
+  methods: {
+    fetchWeatherData(city) {
+      axios.get(`http://localhost:8080/api/${city}`)
+        .then(response => {
+          this.weatherData = response.data;  // Assign the data to a component data property
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+    }
+  },
+  mounted() {
+    this.fetchWeatherData('Raleigh');  // Example call when the component mounts
+  }
+}
+</script>
+
+```
 ## UML Sequence Diagram
 
 Below is a UML sequence diagram illustrating the interaction between the front-end and back-end microservices when requesting and receiving data:
